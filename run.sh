@@ -1,0 +1,1 @@
+./build/RISCV_TLM -L 1 -f tests/C/func1/func1.hex

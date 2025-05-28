@@ -1,0 +1,46 @@
+---
+Language: Cpp
+# BasedOnStyle: Google
+
+IndentWidth: 4
+UseTab: Never
+ColumnLimit: 120
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: false
+  AfterControlStatement: false
+  AfterStruct: false
+  AfterClass: false
+  AfterNamespace: false
+
+InsertNewlineAtEOF: true
+IndentCaseLabels: true
+PointerAlignment: Left
+AccessModifierOffset: -2
+# AlignAfterOpenBracket: Align
+AlignConsecutiveMacros: true
+AlignConsecutiveAssignments: false
+# AllowAllArgumentsOnNextLine: false
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+BreakConstructorInitializers: AfterColon
+BreakBeforeBinaryOperators: None
+BreakStringLiterals: true
+SpacesBeforeTrailingComments: 1
+SortUsingDeclarations: false
+Cpp11BracedListStyle: false
+PenaltyBreakAssignment: 2000
+AlignTrailingComments: true
+
+IncludeCategories:
+  - Regex: '^<[^/]+>'          # 第1级：不带 .h 的标准库头文件
+    Priority: 1
+  - Regex: '^<.*\.h>'          # 第2级：带 .h 的标准库头文件
+    Priority: 2
+  - Regex: '^<.*/.*>'          # 第3级：包含斜杠的第三方库头文件
+    Priority: 3
+  - Regex: '^".*"'             # 第4级：本地项目头文件
+    Priority: 4
+SortIncludes: true             # 启用头文件排序

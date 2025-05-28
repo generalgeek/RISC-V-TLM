@@ -12,8 +12,8 @@
 
 namespace riscv_tlm {
 
-    MemoryInterface::MemoryInterface() :
-            data_bus("data_bus") {}
+MemoryInterface::MemoryInterface() : data_bus("data_bus") {
+}
 
 /**
  * Access data memory to get data
@@ -21,30 +21,30 @@ namespace riscv_tlm {
  * @param size size of the data to read in bytes
  * @return data value read
  */
-    std::uint32_t MemoryInterface::readDataMem(std::uint64_t addr, int size) {
-        std::uint32_t data;
-        tlm::tlm_generic_payload trans;
-        sc_core::sc_time delay = sc_core::SC_ZERO_TIME;
+std::uint32_t MemoryInterface::readDataMem(std::uint64_t addr, int size) {
+    std::uint32_t data;
+    tlm::tlm_generic_payload trans;
+    sc_core::sc_time delay = sc_core::SC_ZERO_TIME;
 
-        trans.set_command(tlm::TLM_READ_COMMAND);
-        trans.set_data_ptr(reinterpret_cast<unsigned char *>(&data));
-        trans.set_data_length(size);
-        trans.set_streaming_width(4); // = data_length to indicate no streaming
-        trans.set_byte_enable_ptr(nullptr); // 0 indicates unused
-        trans.set_dmi_allowed(false); // Mandatory initial value
-        trans.set_response_status(tlm::TLM_INCOMPLETE_RESPONSE);
-        trans.set_address(addr);
+    trans.set_command(tlm::TLM_READ_COMMAND);
+    trans.set_data_ptr(reinterpret_cast<unsigned char*>(&data));
+    trans.set_data_length(size);
+    trans.set_streaming_width(4);       // = data_length to indicate no streaming
+    trans.set_byte_enable_ptr(nullptr); // 0 indicates unused
+    trans.set_dmi_allowed(false);       // Mandatory initial value
+    trans.set_response_status(tlm::TLM_INCOMPLETE_RESPONSE);
+    trans.set_address(addr);
 
-        data_bus->b_transport(trans, delay);
+    data_bus->b_transport(trans, delay);
 
-        if (trans.is_response_error()) {
-            std::stringstream error_msg;
-            error_msg << "Read memory: 0x" << std::hex << addr;
-            SC_REPORT_ERROR("Memory", error_msg.str().c_str());
-        }
-
-        return data;
+    if (trans.is_response_error()) {
+        std::stringstream error_msg;
+        error_msg << "Read memory: 0x" << std::hex << addr;
+        SC_REPORT_ERROR("Memory", error_msg.str().c_str());
     }
+
+    return data;
+}
 
 /**
  * Acces data memory to write data
@@ -53,25 +53,25 @@ namespace riscv_tlm {
  * @param data data to write
  * @param size size of the data to write in bytes
  */
-    void MemoryInterface::writeDataMem(std::uint64_t addr, std::uint32_t data, int size) {
-        tlm::tlm_generic_payload trans;
-        sc_core::sc_time delay = sc_core::SC_ZERO_TIME;
+void MemoryInterface::writeDataMem(std::uint64_t addr, std::uint32_t data, int size) {
+    tlm::tlm_generic_payload trans;
+    sc_core::sc_time delay = sc_core::SC_ZERO_TIME;
 
-        trans.set_command(tlm::TLM_WRITE_COMMAND);
-        trans.set_data_ptr(reinterpret_cast<unsigned char *>(&data));
-        trans.set_data_length(size);
-        trans.set_streaming_width(4); // = data_length to indicate no streaming
-        trans.set_byte_enable_ptr(nullptr); // 0 indicates unused
-        trans.set_dmi_allowed(false); // Mandatory initial value
-        trans.set_response_status(tlm::TLM_INCOMPLETE_RESPONSE);
-        trans.set_address(addr);
+    trans.set_command(tlm::TLM_WRITE_COMMAND);
+    trans.set_data_ptr(reinterpret_cast<unsigned char*>(&data));
+    trans.set_data_length(size);
+    trans.set_streaming_width(4);       // = data_length to indicate no streaming
+    trans.set_byte_enable_ptr(nullptr); // 0 indicates unused
+    trans.set_dmi_allowed(false);       // Mandatory initial value
+    trans.set_response_status(tlm::TLM_INCOMPLETE_RESPONSE);
+    trans.set_address(addr);
 
-        data_bus->b_transport(trans, delay);
+    data_bus->b_transport(trans, delay);
 
-        if (trans.is_response_error()) {
-            std::stringstream error_msg;
-            error_msg << "Write memory: 0x" << std::hex << addr;
-            SC_REPORT_ERROR("Memory", error_msg.str().c_str());
-        }
+    if (trans.is_response_error()) {
+        std::stringstream error_msg;
+        error_msg << "Write memory: 0x" << std::hex << addr;
+        SC_REPORT_ERROR("Memory", error_msg.str().c_str());
     }
 }
+} // namespace riscv_tlm

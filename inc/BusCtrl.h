@@ -9,8 +9,8 @@
 #ifndef __BUSCTRL_H__
 #define __BUSCTRL_H__
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 
@@ -27,8 +27,8 @@ namespace riscv_tlm {
  */
 #define TRACE_MEMORY_ADDRESS 0x40000000
 
-#define TIMER_MEMORY_ADDRESS_LO 0x40004000
-#define TIMER_MEMORY_ADDRESS_HI 0x40004004
+#define TIMER_MEMORY_ADDRESS_LO    0x40004000
+#define TIMER_MEMORY_ADDRESS_HI    0x40004004
 #define TIMERCMP_MEMORY_ADDRESS_LO 0x40004008
 #define TIMERCMP_MEMORY_ADDRESS_HI 0x4000400C
 
@@ -43,52 +43,50 @@ namespace riscv_tlm {
  * It will be expanded with more ports when required (for DMA,
  * other peripherals, etc.)
  */
-    class BusCtrl : sc_core::sc_module {
-    public:
-        /**
-         * @brief TLM target socket CPU instruction memory bus
-         */
-        tlm_utils::simple_target_socket<BusCtrl> cpu_instr_socket;
+class BusCtrl : sc_core::sc_module {
+  public:
+    /**
+     * @brief TLM target socket CPU instruction memory bus
+     */
+    tlm_utils::simple_target_socket<BusCtrl> cpu_instr_socket;
 
-        /**
-         * @brief TLM target socket CPU data memory bus
-         */
-        tlm_utils::simple_target_socket<BusCtrl> cpu_data_socket;
+    /**
+     * @brief TLM target socket CPU data memory bus
+     */
+    tlm_utils::simple_target_socket<BusCtrl> cpu_data_socket;
 
-        /**
-         * @brief TLM initiator socket Main memory bus
-         */
-        tlm_utils::simple_initiator_socket<BusCtrl> memory_socket;
+    /**
+     * @brief TLM initiator socket Main memory bus
+     */
+    tlm_utils::simple_initiator_socket<BusCtrl> memory_socket;
 
-        /**
-         * @brief TLM initiator socket Trace module
-         */
-        tlm_utils::simple_initiator_socket<BusCtrl> trace_socket;
+    /**
+     * @brief TLM initiator socket Trace module
+     */
+    tlm_utils::simple_initiator_socket<BusCtrl> trace_socket;
 
-        /**
-         * @brief TLM initiator socket Trace module
-         */
-        tlm_utils::simple_initiator_socket<BusCtrl> timer_socket;
+    /**
+     * @brief TLM initiator socket Trace module
+     */
+    tlm_utils::simple_initiator_socket<BusCtrl> timer_socket;
 
-        /**
-         * @brief constructor
-         * @param name module's name
-         */
-        explicit BusCtrl(sc_core::sc_module_name const &name);
+    /**
+     * @brief constructor
+     * @param name module's name
+     */
+    explicit BusCtrl(sc_core::sc_module_name const& name);
 
-        /**
-         * @brief TLM-2 blocking mechanism
-         * @param trans transtractino to perform
-         * @param delay delay associated to this transaction
-         */
-        virtual void b_transport(tlm::tlm_generic_payload &trans,
-                                 sc_core::sc_time &delay);
+    /**
+     * @brief TLM-2 blocking mechanism
+     * @param trans transtractino to perform
+     * @param delay delay associated to this transaction
+     */
+    virtual void b_transport(tlm::tlm_generic_payload& trans, sc_core::sc_time& delay);
 
-    private:
-        bool instr_direct_mem_ptr(tlm::tlm_generic_payload &,
-                                  tlm::tlm_dmi &dmi_data);
+  private:
+    bool instr_direct_mem_ptr(tlm::tlm_generic_payload&, tlm::tlm_dmi& dmi_data);
 
-        void invalidate_direct_mem_ptr(sc_dt::uint64 start, sc_dt::uint64 end);
-    };
-}
+    void invalidate_direct_mem_ptr(sc_dt::uint64 start, sc_dt::uint64 end);
+};
+} // namespace riscv_tlm
 #endif

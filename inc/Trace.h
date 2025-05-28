@@ -9,8 +9,8 @@
 #ifndef __TRACE_H__
 #define __TRACE_H__
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 
@@ -20,45 +20,42 @@
 #include "tlm_utils/simple_target_socket.h"
 
 namespace riscv_tlm::peripherals {
+/**
+ * @brief Simple trace peripheral
+ *
+ * This peripheral outputs to cout any character written to its unique register
+ */
+class Trace : sc_core::sc_module {
+  public:
     /**
-    * @brief Simple trace peripheral
-    *
-    * This peripheral outputs to cout any character written to its unique register
-    */
-    class Trace : sc_core::sc_module {
-    public:
+     * @brief Bus socket
+     */
+    tlm_utils::simple_target_socket<Trace> socket;
 
-        /**
-        * @brief Bus socket
-        */
-        tlm_utils::simple_target_socket<Trace> socket;
+    /**
+     * @brief Constructor
+     * @param name Module name
+     */
+    explicit Trace(sc_core::sc_module_name const& name);
 
-        /**
-        * @brief Constructor
-        * @param name Module name
-        */
-        explicit Trace(sc_core::sc_module_name const &name);
+    /**
+     * @brief Destructor
+     */
+    ~Trace() override;
 
-        /**
-        * @brief Destructor
-        */
-        ~Trace() override;
+  private:
+    // TLM-2 blocking transport method
+    virtual void b_transport(tlm::tlm_generic_payload& trans, sc_core::sc_time& delay);
 
-    private:
+    void xtermLaunch(char* slaveName) const;
 
-        // TLM-2 blocking transport method
-        virtual void b_transport(tlm::tlm_generic_payload &trans,
-                                 sc_core::sc_time &delay);
+    void xtermKill();
 
-        void xtermLaunch(char *slaveName) const;
+    void xtermSetup();
 
-        void xtermKill();
-
-        void xtermSetup();
-
-        int ptSlave{};
-        int ptMaster{};
-        int xtermPid{};
-    };
-}
+    int ptSlave{};
+    int ptMaster{};
+    int xtermPid{};
+};
+} // namespace riscv_tlm::peripherals
 #endif

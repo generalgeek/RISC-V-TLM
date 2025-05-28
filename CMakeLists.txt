@@ -5,7 +5,7 @@
 ## cmake ../ -DCMAKE_CXX_STANDARD=17
 ## make
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.20)
 project(RISCV_TLM)
 
 # specify the C++ standard
@@ -17,16 +17,16 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_PREFIX_PATH $ENV{BOOST_ROOT};$ENV{SYSTEMC_HOME};$ENV{SPDLOG_HOME})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_compile_options(-O3 -g -Wall -Wextra -Wunused-function -Wpedantic)
+add_compile_options(-O0 -g -Wall -Wextra -Wunused-function -Wpedantic)
 
 include_directories(./inc/)
 file(GLOB SRC "./src/*.cpp")
 
+find_package(spdlog CONFIG REQUIRED)
+find_package(Boost REQUIRED)
 find_package(SystemCLanguage CONFIG REQUIRED)
 set (CMAKE_CXX_STANDARD ${SystemC_CXX_STANDARD})
 
-find_package(spdlog CONFIG REQUIRED)
-find_package(Boost REQUIRED)
 add_executable(RISCV_TLM ${SRC} )
 target_link_libraries(RISCV_TLM SystemC::systemc)
 target_link_libraries(RISCV_TLM spdlog::spdlog)

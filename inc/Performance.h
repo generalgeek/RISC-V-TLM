@@ -21,83 +21,74 @@
  * Singleton class to be shared among all other classes
  */
 class Performance {
-public:
+  public:
+    /**
+     * @brief Get an instance of the class
+     * @return pointer to Performance class
+     */
+    static Performance* getInstance();
 
-	/**
-	 * @brief Get an instance of the class
-	 * @return pointer to Performance class
-	 */
-	static Performance* getInstance();
+    /**
+     * @brief Increment data memory read counter
+     */
+    inline void dataMemoryRead() { data_memory_read++; }
 
-	/**
-	 * @brief Increment data memory read counter
-	 */
-	inline void dataMemoryRead() {
-		data_memory_read++;
-	}
+    /**
+     * @brief Increment data memory write counter
+     */
+    inline void dataMemoryWrite() { data_memory_write++; }
 
-	/**
-	 * @brief Increment data memory write counter
-	 */
-	inline void dataMemoryWrite() {
-		data_memory_write++;
-	}
+    /**
+     * @brief Increment code memory read counter
+     */
+    inline void codeMemoryRead() { code_memory_read++; }
 
-	/**
-	 * @brief Increment code memory read counter
-	 */
-	inline void codeMemoryRead() {
-		code_memory_read++;
-	}
+    /**
+     * @brief Increment code memory write counter
+     */
+    inline void codeMemoryWrite() { code_memory_write++; }
 
-	/**
-	 * @brief Increment code memory write counter
-	 */
-	inline void codeMemoryWrite() {
-		code_memory_write++;
-	}
+    /**
+     * @brief Increment register read counter
+     */
+    inline void registerRead() { register_read++; }
 
-	/**
-	 * @brief Increment register read counter
-	 */
-	inline void registerRead() {
-		register_read++;
-	}
+    /**
+     * @brief Increment register write counter
+     */
+    inline void registerWrite() { register_write++; }
 
-	/**
-	 * @brief Increment register write counter
-	 */
-	inline void registerWrite() {
-		register_write++;
-	}
+    /**
+     * @brief Increment instructions executed counter
+     */
+    inline void instructionsInc() { instructions_executed++; }
 
-	/**
-	 * @brief Increment instructions executed counter
-	 */
-	inline void instructionsInc() {
-		instructions_executed++;
-	}
+    /**
+     * @brief Dump counters to cout
+     */
+    void dump() const;
 
-	/**
-	 * @brief Dump counters to cout
-	 */
-	void dump() const;
+    inline uint_fast64_t getInstructions() const { return instructions_executed; }
 
-	inline uint_fast64_t getInstructions() const {
-	  return instructions_executed;
-	}
+  private:
+    static Performance* instance;
+    Performance();
 
-private:
-	static Performance *instance;
-	Performance();
-
-	uint_fast64_t data_memory_read;
-	uint_fast64_t data_memory_write;
-	uint_fast64_t code_memory_read;
-	uint_fast64_t code_memory_write;
-	uint_fast64_t register_read;
-	uint_fast64_t register_write;
-	uint_fast64_t instructions_executed;
+    uint_fast64_t data_memory_read;
+    uint_fast64_t data_memory_write;
+    uint_fast64_t code_memory_read;
+    uint_fast64_t code_memory_write;
+    uint_fast64_t register_read;
+    uint_fast64_t register_write;
+    uint_fast64_t instructions_executed;
 };
 
 #endif
+
+/**
+ * Performance 类是一个 ​​单例类（Singleton）​​，用于在硬件模拟（如基于 SystemC/TLM 的 CPU 模型）中
+ * ​​收集和统计性能指标​​，包括：
+ * ​内存访问次数​​（数据内存读/写、代码内存读/写）
+ * 寄存器操作次数​​（读/写）
+ * ​已执行指令总数​
+ */

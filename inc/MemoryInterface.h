@@ -16,24 +16,23 @@
 #include "tlm_utils/simple_initiator_socket.h"
 #include "tlm_utils/tlm_quantumkeeper.h"
 
-#include "memory.h"
 #include <cstdint>
+#include "memory.h"
 
 namespace riscv_tlm {
 
 /**
  * @brief Memory Interface
  */
-    class MemoryInterface {
-    public:
+class MemoryInterface {
+  public:
+    tlm_utils::simple_initiator_socket<MemoryInterface> data_bus;
 
-        tlm_utils::simple_initiator_socket<MemoryInterface> data_bus;
+    MemoryInterface();
 
-        MemoryInterface();
+    std::uint32_t readDataMem(std::uint64_t addr, int size);
 
-        std::uint32_t readDataMem(std::uint64_t addr, int size);
-
-        void writeDataMem(std::uint64_t addr, std::uint32_t data, int size);
-    };
-}
+    void writeDataMem(std::uint64_t addr, std::uint32_t data, int size);
+};
+} // namespace riscv_tlm
 #endif /* INC_MEMORYINTERFACE_H_ */
