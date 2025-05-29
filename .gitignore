@@ -48,5 +48,5 @@ gh-md-toc
 *.dump
 *.log
 .idea/
-.vscode/
+# .vscode/
 build

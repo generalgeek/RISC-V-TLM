@@ -1,3 +1,2 @@
-cmake -S . -B build
-# cmake -S . -B build -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+cmake -S . -B build -G "Unix Makefiles"
 cmake --build build -j8
